@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Stagiaires</title>
+</head>
+<body>
+<div class="alert alert-primary" role="alert"><h1>Stagiaires MyBeatApps</h1></div>
+<div class="alert alert-success" role="alert">
+    <!-- Formulaire pour ajouter un stagiaire -->
+    <div id="ajout-stagiaire">
+        <h3>Ajouter un Stagiaire</h3>
+        <table>
+            <tr>
+                <td><label for="nom">Nom et prenom:</label></td>
+                <td><input type="text" id="nom" placeholder="Non et prenom "></td>
+                <td><label for="institut">Institut d'origne:</label></td>
+                <td><input type="text" placeholder="Institut " id="institut"></td>
+                <td><label for="service">Service de Stage:</label></td>
+                <td>
+                    <select id="service" >
+                        <option value="">--select--</option>
+                        <option value="commerce">commerce</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="developpement">developpement</option>
+                        <option value="RH">RH</option>
+                    </select>
+                </td>
+                <td><button type="button" class="btn btn-primary" onclick="ajouterStagiaire()">Enregistrer</button></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="alert alert-secondary" role="alert">
+    <!-- Tableau pour afficher la liste des stagiaires -->
+    <div id="liste-stagiaires">
+        <h2>Liste des Stagiaires</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Institut</th>
+                    <th>Service de Stage</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="tab1">
+                <!-- Les données statiques des stagiaires seront affichées ici -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    let stagiaires = [
+        { id: 2, nom: "Ali Ben Salah", institut: "ESSAT", service: "commerce" },
+        { id: 16, nom: "Aya Ben Salah", institut: "ENIG", service: "commerce" },
+        { id: 28, nom: "Majed Ben Salah", institut: "ISIMG", service: "marketing" }
+    ];
+
+    function afficherStagiaires() {
+        var tab = document.getElementById("tab1");
+        tab.innerHTML = "";
+
+        stagiaires.forEach(function(stagiaire) {
+            var tr = document.createElement("tr");
+            tr.id = "row" + stagiaire.id;
+
+            var td1 = document.createElement("td");
+            var c1 = document.createTextNode(stagiaire.id);
+            td1.appendChild(c1);
+            tr.appendChild(td1);
+
+            var td2 = document.createElement("td");
+            var c2 = document.createTextNode(stagiaire.nom);
+            td2.appendChild(c2);
+            tr.appendChild(td2);
+
+            var td3 = document.createElement("td");
+            var c3 = document.createTextNode(stagiaire.institut);
+            td3.appendChild(c3);
+            tr.appendChild(td3);
+
+            var td4 = document.createElement("td");
+            var c4 = document.createTextNode(stagiaire.service);
+            td4.appendChild(c4);
+            tr.appendChild(td4);
+
+            var td5 = document.createElement("td");
+            td5.innerHTML = "<button type='button' class='btn btn-danger' onclick='supprimerStagiaire(" + stagiaire.id + ")'>Supprimer</button>";
+            tr.appendChild(td5);
+
+            tab.appendChild(tr);
+        });
+    }
+
+    function ajouterStagiaire() {
+        var nom = document.getElementById("nom").value;
+        var institut = document.getElementById("institut").value;
+        var service = document.getElementById("service").value;
+
+        // Génération d'un ID unique pour le nouveau stagiaire
+        var id = Math.floor(Math.random() * 1000) + 1;
+
+        var nouveauStagiaire = {
+            id: id,
+            nom: nom,
+            institut: institut,
+            service: service
+        };
+
+        stagiaires.push(nouveauStagiaire);
+        afficherStagiaires();
+    }
+
+    function supprimerStagiaire(id) {
+        stagiaires = stagiaires.filter(function(stagiaire) {
+            return stagiaire.id !== id;
+        });
+
+        afficherStagiaires();
+    }
+
+    // Appeler la fonction pour afficher les stagiaires au chargement de la page
+    window.onload = function() {
+        afficherStagiaires();
+    };
+</script>
+</body>
+</html>
